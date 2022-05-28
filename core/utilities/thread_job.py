@@ -3,7 +3,7 @@ from typing import Any
 
 
 class ThreadJobInterval(threading.Thread):
-    def __init__(self, callback, event: threading.Event, interval: int):
+    def __init__(self, callback, event: Any, interval: int):
         """runs the callback function after interval seconds
 
         :param callback:  callback function to invoke
