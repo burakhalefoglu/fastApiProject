@@ -21,4 +21,4 @@ pymongo>=4.1.1
 dnspython>=2.2.1
 cython>=0.29.28
 colorama>=0.4.4
-celery >=5.2.6
+schedule >=1.1.0

@@ -1,6 +1,4 @@
 from core.libraries.scraper.scraper import ScraperApi
-from core.utilities.thread_job import ThreadJob
-from worker.worker import event
 from datetime import datetime
 from core.libraries.isyatirim.isyatirim_historical_datas import IsYatirimHistoricalData
 from service.isyatirim.isyatirim_historical_data import BistSecuritiesHistoricalService
@@ -39,8 +37,3 @@ def bist_worker_services():
                                                                        data=hist_data)
 
 
-
-
-
-
-bist_worker = ThreadJob(bist_worker_services, event, 2)
