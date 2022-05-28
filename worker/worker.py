@@ -1,24 +1,60 @@
+import aioschedule as schedule
+import asyncio
+import time
 import threading
-import schedule
+import time
+
 
 from core.utilities.thread_job import ThreadJob
-from bist_worker import bist_worker_services
-from emtia_worker import emtia_worker_services
-from foreing_currency_worker import foreign_currency_worker_services
+from worker.bist_worker import BistWorker
+from worker.emtia_worker import EmtiaWorker
+from worker.foreing_currency_worker import ForeignCurrencyWorker
 
-event = threading.Event()
+
+
+
+async def job():
+    await asyncio.sleep(1)
+    print("I'm running on thread %s" % threading.current_thread())
+
+def run_threaded(job_func):
+    job_thread = threading.Thread(target=job_func)
+    job_thread.start()
+
+
+
+
 
 
 def run_schedules():
-    # schedule.every().day.at("22:00").do(foreign_currency_worker_services)
-    # schedule.every().day.at("22:00").do(emtia_worker_services)
-    # schedule.every().day.at("22:00").do(bist_worker_services)
+    bist = BistWorker()
+    emtia = EmtiaWorker()
+    foreign = ForeignCurrencyWorker()
 
-    schedule.every(1).seconds.do(emtia_worker_services)
-    schedule.every(2).seconds.do(bist_worker_services)
+    # schedule.every().day.at("22:56").do(foreign.foreign_currency_worker_services)
+    # schedule.every().day.at("22:56").do(emtia.emtia_worker_services)
+    # schedule.every().day.at("22:56").do(bist.bist_worker_services)
 
+
+    # schedule.every(1).seconds.do(run_threaded, job)
+    # schedule.every(2).seconds.do(run_threaded, job)
+    # schedule.every(3).seconds.do(run_threaded, job)
+    # schedule.every(1).seconds.do(run_threaded, job)
+    # schedule.every(1).seconds.do(run_threaded, job)
+
+
+    schedule.every(1).seconds.do(foreign.foreign_currency_worker_services)
+    schedule.every(2).seconds.do(emtia.emtia_worker_services)
+    schedule.every(3).seconds.do(bist.bist_worker_services)
+
+
+ 
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
     while True:
-        schedule.run_pending()
+        loop.run_until_complete(schedule.run_pending())
+
+        time.sleep(0.1)
 
 
 def start_workers():
@@ -27,7 +63,3 @@ def start_workers():
     job.start()
 
 
-def date_obj_to_str(element: int) -> str:
-    if element <= 9:
-        return "0" + str(element)
-    return str(element)

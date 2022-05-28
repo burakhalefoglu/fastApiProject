@@ -4,11 +4,11 @@ from kink import inject
 from core.aspects.exception.exception_aspect import exception_aspect
 from core.aspects.log.log_aspect import log_aspect
 from core.aspects.performance.performance_aspect import performance_aspect
-from model.bist_historical_data_model import BistHistoricalData
+from model.bist_historical_data_model import InvestmentItemHistoricalData
 from repository.i_repository_dal import IRepositoryDal
 
 
-class BistSecuritiesHistoricalService:
+class InvestmentItemHistoricalService:
     
     @exception_aspect  # must be last - 1
     @inject  # must be last - 2
@@ -26,7 +26,7 @@ class BistSecuritiesHistoricalService:
         data_value = data[1]
         date_time = datetime.datetime.utcfromtimestamp(float(epoch_data_time) / 1000.)
         date_time_turkey = date_time + datetime.timedelta(hours=3)
-        bist_historical_data = BistHistoricalData(
+        bist_historical_data = InvestmentItemHistoricalData(
             code=code,
             value=data_value,
             date=date_time_turkey)

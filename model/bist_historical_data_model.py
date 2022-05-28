@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 @dataclass
-class BistHistoricalData:
+class InvestmentItemHistoricalData:
     date: datetime
     code: str
     value: float
